@@ -4,13 +4,13 @@ I wanted to replicate the effect you get when you press a squishy material again
 face against the glass of a fish tank, and seeing what it looks like from the inside. You'll see the material being
 called "bouncy" throughout this note. Here's what it'll look like:
 
-<img src="m_bouncy_demo1.gif" width="800"/>
+<img src="m_bouncy_demo1.gif" width="1120"/>
 
 The exercise here is basically displacing vertices, so I've broken down the task into 2 parts:
 *   An **orthogonal** (in relation to the instigator plane) displacement factor
 *   A **parallel** (in relation to the instigator plane) displacement factor
 
-<img src="m_bouncy_guide1.jpg" width="800"/>
+<img src="m_bouncy_guide1.jpg" width="1120"/>
 
 These factors are expressed as vectors and in the end we'll add them both.
 
@@ -23,22 +23,22 @@ The 2 things we need answered to build this effect are:
 *   Has our object intersected with the instigator plane yet?
 *   How much has our object clipped through the plane? (For each "particle" of our object)
 
-<img src="m_bouncy_guide2.png" width="800"/>
+<img src="m_bouncy_guide2.png" width="1120"/>
 
 Well, first we begin with a couple of truths: **vector projection** and **dot product**, and make a simple deduction to
 get the length of a projection without knowing the angle between both vectors involved:
 
-<img src="m_bouncy_guide3.png" width="800"/>
+<img src="m_bouncy_guide3.png" width="1120"/>
 
 Applying that to our case, here's how we obtain the **shortest distance** between a particle (or vertex) in our object's
 surface and the instigator plane:
 
-<img src="m_bouncy_guide4.png" width="800"/>
+<img src="m_bouncy_guide4.png" width="1120"/>
 
 In fact, since we derive our distance from a dot product, we can also tell when our object's crossed the plane
 boundaries just by looking at the sign of the value:
 
-<img src="m_bouncy_guide5.png" width="800"/>
+<img src="m_bouncy_guide5.png" width="1120"/>
 
 This gives us the numerical amount of displacement we'll need. To get a direction, we just multiply it by the plane
 normal; since we only want to displace when clipping through the plane, this is the direction that takes our vertex
@@ -49,7 +49,7 @@ back towards the boundary. We're ready to write the shader.
 
 Highlighted are the nodes related to operations I didn't exactly talk about so far:
 
-<img src="m_bouncy_guide6.jpg" width="800"/>
+<img src="m_bouncy_guide6.jpg" width="1120"/>
 
 1.  Since it's up to us to provide a vector of length 1, we use `Normalize` just to make sure
 2.  Since we'll only displace when clipping through (negative value), we do a `Min` with `0`, so the vertex won't be
@@ -63,7 +63,7 @@ want to go back to when clipping through the plane
 Create a material instance from the base material we have so far so that you can customize `V3_PlaneNormal` and
 `V3_PlanePoint` more easily. This is what we have:
 
-<img src="m_bouncy_demo2.gif" width="800"/>
+<img src="m_bouncy_demo2.gif" width="1120"/>
 
 You can see we're impeding the vertices from clipping through the plane, they kinda "squish" or "bounce off" the surface
 which is exactly what we want. To complete the effect we also need some spread, so onto the next part.
@@ -78,7 +78,7 @@ To "squish" the surface we also need to "spread" it, and we probably want to do 
 the edges of the contact area. For our editor sphere, this center can be the actor position. We project both surface and
 center vectors onto the plane and do a subtraction to get the direction `T`:
 
-<img src="m_bouncy_guide7.png" width="800"/>
+<img src="m_bouncy_guide7.png" width="1120"/>
 
 Just remember that both `D1` and `D2` are exactly the distances we learned how to calculate in the previous section.
 
@@ -90,7 +90,7 @@ to the amount we displaced the vertex orthogonally to the plane in the previous 
 *linearly* proportional, so I used a `Sqrt` and multiplied by a scalar parameter that I can use to control the effect
 through the material instance (click to expand):
 
-<img src="m_bouncy_guide8.jpg" width="800"/>
+<img src="m_bouncy_guide8.jpg" width="1120"/>
 
 The graph looks considerably bigger, but not at all more complicated:
 
@@ -100,7 +100,7 @@ previous orthogonal displacement, and **multiply** by a scalar param that I can 
 
 So here's what we got, finally:
 
-<img src="m_bouncy_demo3.gif" width="800"/>
+<img src="m_bouncy_demo3.gif" width="1120"/>
 
 You can see that the "spreading" is not really physically accurate, and one way to improve it a little would be to
 probably start deforming the vertices *slightly before* reaching the plane surface. Also, in a more realistic scenario,
